@@ -7,6 +7,9 @@ source ~/.zplug/init.zsh
 
 zplug "mafredri/zsh-async", from:github
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
+zplug "plugins/kubectl", from:oh-my-zsh
+zplug "plugins/git", from:oh-my-zsh
+zplug "plugins/kube-ps1", from:oh-my-zsh
 zplug "themes/simple", from:oh-my-zsh, as:theme
 zplug "~/.zsh", from:local
 
@@ -72,6 +75,10 @@ if [[ $UID == 0 ]]; then
     unset HISTFILE
     export SAVEHIST=0
 fi
+
+# Prompt
+export PROMPT=$PROMPT'$(kube_ps1) '
+kubeoff
 
 # fzf
 export FZF_DEFAULT_OPTS="--extended --ansi --multi"
