@@ -52,6 +52,7 @@ if [[ $OSTYPE == "linux-gnu" ]]; then
   alias open=xdg-open
 fi
 alias cat=ccat
+alias vimrc="$EDITOR $HOME/.vim/vimrc"
 alias zshrc="$EDITOR $HOME/.zshrc"
 
 # nvm
