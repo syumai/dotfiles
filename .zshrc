@@ -11,6 +11,7 @@ zplug "plugins/kubectl", from:oh-my-zsh
 zplug "plugins/git", from:oh-my-zsh
 zplug "plugins/kube-ps1", from:oh-my-zsh
 zplug "themes/simple", from:oh-my-zsh, as:theme
+zplug "lib/theme-and-appearance", from:oh-my-zsh
 zplug "~/.zsh", from:local
 
 if ! zplug check --verbose; then
@@ -51,6 +52,7 @@ if [[ $OSTYPE == "linux-gnu" ]]; then
   alias open=xdg-open
 fi
 alias cat=ccat
+alias zshrc="$EDITOR $HOME/.zshrc"
 
 # nvm
 export NVM_DIR="$HOME/.nvm"
@@ -67,10 +69,12 @@ else
   FD_COMMAND=fd
 fi
 
-# functions
-function fcd() {
-  cd $($FD_COMMAND | fzf)
-}
+# fzf
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export FZF_DEFAULT_OPTS="--extended --ansi --multi"
+export FZF_ALT_C_COMMAND="$FD_COMMAND --type=d -I . ~"
+export FZF_CTRL_T_COMMAND="$FD_COMMAND -I . ~"
+export INTERACTIVE_FILTER="fzf"
 
 # Language
 export LANGUAGE="en_US.UTF-8"
@@ -93,12 +97,6 @@ fi
 # Prompt
 export PROMPT=$PROMPT'$(kube_ps1) '
 kubeoff
-
-# fzf
-export FZF_DEFAULT_OPTS="--extended --ansi --multi"
-
-# available $INTERACTIVE_FILTER
-export INTERACTIVE_FILTER="fzf"
 
 # global env
 source $HOME/.env
