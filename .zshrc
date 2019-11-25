@@ -22,12 +22,19 @@ fi
 
 zplug load
 
+# Go
+export GOROOT=$(go env GOROOT)
+export GOPATH=$(go env GOPATH)
+
 # PATH
 paths=(
   "/bin"
   "/usr/local/bin"
   "~/.deno/bin"
-  "/~go/bin"
+  "~/.cargo/env"
+  "$GOROOT/bin"
+  "$GOPATH/bin"
+  "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin"
   "~/bin"
 )
 joined_paths=$PATH
@@ -43,6 +50,7 @@ export GIT_EDITOR="${EDITOR}"
 if [[ $OSTYPE == "linux-gnu" ]]; then
   alias open=xdg-open
 fi
+alias cat=ccat
 
 # nvm
 export NVM_DIR="$HOME/.nvm"
@@ -52,11 +60,17 @@ export NVM_DIR="$HOME/.nvm"
 # direnv
 eval "$(direnv hook zsh)"
 
-# functions
-function fd() {
-  cd $(fdfind | fzf)
-}
+# fd
+if [[ $OSTYPE == "linux-gnu" ]]; then
+  FD_COMMAND=fdfind
+else
+  FD_COMMAND=fd
+fi
 
+# functions
+function fcd() {
+  cd $($FD_COMMAND | fzf)
+}
 
 # Language
 export LANGUAGE="en_US.UTF-8"
@@ -85,4 +99,7 @@ export FZF_DEFAULT_OPTS="--extended --ansi --multi"
 
 # available $INTERACTIVE_FILTER
 export INTERACTIVE_FILTER="fzf"
+
+# global env
+source $HOME/.env
 
