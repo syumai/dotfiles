@@ -54,6 +54,7 @@ fi
 alias cat=ccat
 alias vimrc="$EDITOR $HOME/.vim/vimrc"
 alias zshrc="$EDITOR $HOME/.zshrc"
+alias history="fc -l 1"
 
 # nvm
 export NVM_DIR="$HOME/.nvm"
