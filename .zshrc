@@ -31,12 +31,12 @@ export GOPATH=$(go env GOPATH)
 paths=(
   "/bin"
   "/usr/local/bin"
-  "~/.deno/bin"
-  "~/.cargo/env"
+  "$HOME/.deno/bin"
+  "$HOME/.cargo/env"
   "$GOROOT/bin"
   "$GOPATH/bin"
   "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin"
-  "~/bin"
+  "$HOME/bin"
 )
 joined_paths=$PATH
 for p in $paths; do
@@ -55,6 +55,7 @@ alias cat=ccat
 alias vimrc="$EDITOR $HOME/.vim/vimrc"
 alias zshrc="$EDITOR $HOME/.zshrc"
 alias history="fc -l 1"
+alias gs="git branch -l | fzf | xargs git switch"
 
 # nvm
 export NVM_DIR="$HOME/.nvm"
