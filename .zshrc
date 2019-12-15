@@ -10,6 +10,7 @@ zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "plugins/kubectl", from:oh-my-zsh
 zplug "plugins/git", from:oh-my-zsh
 zplug "plugins/kube-ps1", from:oh-my-zsh
+zplug "plugins/yarn", from:oh-my-zsh
 zplug "themes/simple", from:oh-my-zsh, as:theme
 zplug "lib/theme-and-appearance", from:oh-my-zsh
 zplug "~/.zsh", from:local
