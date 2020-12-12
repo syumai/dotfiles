@@ -32,8 +32,9 @@ export GOPATH=$(go env GOPATH)
 paths=(
   "/bin"
   "/usr/local/bin"
+  "$HOME/.local/bin"
   "$HOME/.deno/bin"
-  "$HOME/.cargo/env"
+  "$HOME/.cargo/bin"
   "$GOROOT/bin"
   "$GOPATH/bin"
   "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin"
@@ -57,6 +58,7 @@ alias vimrc="$EDITOR $HOME/.vim/vimrc"
 alias zshrc="$EDITOR $HOME/.zshrc"
 alias history="fc -l 1"
 alias gs="git branch -l | fzf | xargs git switch"
+alias :q=exit
 
 # nvm
 export NVM_DIR="$HOME/.nvm"
@@ -76,7 +78,7 @@ fi
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_OPTS="--extended --ansi --multi"
-export FZF_ALT_C_COMMAND="$FD_COMMAND --type=d -I . ~"
+export FZF_ALT_C_COMMAND="$FD_COMMAND --type=d -I . $(ghq root)"
 export FZF_CTRL_T_COMMAND="$FD_COMMAND -I . ~"
 export INTERACTIVE_FILTER="fzf"
 
