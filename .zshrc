@@ -27,6 +27,7 @@ zplug load
 # Go
 export GOROOT=$(go env GOROOT)
 export GOPATH=$(go env GOPATH)
+export GOBIN=$(go env GOPATH)/bin
 
 # PATH
 paths=(
@@ -35,10 +36,14 @@ paths=(
   "$HOME/.local/bin"
   "$HOME/.deno/bin"
   "$HOME/.cargo/bin"
+  "$HOME/.cargo/env"
+  "$HOME/.wasmer/bin"
   "$GOROOT/bin"
   "$GOPATH/bin"
   "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin"
+  "/usr/local/tinygo/bin"
   "$HOME/bin"
+  "$HOME/.local/bin"
 )
 joined_paths=$PATH
 for p in $paths; do
@@ -107,3 +112,9 @@ kubeoff
 # global env
 source $HOME/.env
 
+
+# The next line updates PATH for the Google Cloud SDK.
+# if [ -f '/home/syumai/Application/google-cloud-sdk/path.zsh.inc' ]; then . '/home/syumai/Application/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+# if [ -f '/home/syumai/Application/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/syumai/Application/google-cloud-sdk/completion.zsh.inc'; fi
