@@ -126,3 +126,31 @@ fabric.properties
 ########################################################################
 
 .envrc
+
+# Node.js
+node_modules
+
+
+# Zig
+zig-cache
+
+# VS Code
+.vscode
+
+# Windsurf
+.windsurfrules
+
+# Claude
+.claude
+
+# Serena
+
+.serena
+
+# Spec Kit
+
+.specify
+
+# AGENTS
+
+AGENTS.md

@@ -5,9 +5,10 @@
 
 source ~/.zplug/init.zsh
 
-zplug "mafredri/zsh-async", from:github
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
+zplug "mafredri/zsh-async", from:github
 zplug "plugins/kubectl", from:oh-my-zsh
+zplug "lib/async_prompt", from:oh-my-zsh
 zplug "plugins/git", from:oh-my-zsh
 zplug "plugins/kube-ps1", from:oh-my-zsh
 zplug "plugins/yarn", from:oh-my-zsh
@@ -24,6 +25,11 @@ fi
 
 zplug load
 
+
+export ESMETA_HOME="$HOME/go/src/github.com/es-meta/esmeta" # IMPORTANT!!!
+export PATH="$ESMETA_HOME/bin:$PATH" # for executables `esmeta` and etc.
+source $ESMETA_HOME/.completion # for auto-completion
+
 # Go
 export GOROOT=$(go env GOROOT)
 export GOPATH=$(go env GOPATH)
@@ -33,7 +39,10 @@ export GOBIN=$(go env GOPATH)/bin
 paths=(
   "/bin"
   "/usr/local/bin"
-  "$HOME/.local/bin"
+  "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin"
+  "$(brew --prefix)/opt/llvm/bin"
+  "$(brew --prefix)/opt/python/libexec/bin"
+  "$(brew --prefix)/opt/openjdk/bin"
   "$HOME/.deno/bin"
   "$HOME/.cargo/bin"
   "$HOME/.cargo/env"
@@ -44,11 +53,24 @@ paths=(
   "/usr/local/tinygo/bin"
   "$HOME/bin"
   "$HOME/.local/bin"
+  "$GOROOT/lib/wasm"
+  "$HOME/.rbenv/bin"
+  "$(brew --prefix)/bin"
+  "$HOME/go/src/github.com/WebAssembly/binaryen/bin"
+  "$HOME/zls"
+  "$HOME/.bun/bin"
+  "$GOROOT/misc/wasm"
+  "$HOME/.jsvu/bin"
 )
 joined_paths=$PATH
 for p in $paths; do
-  export PATH=$PATH:$p
+  export PATH=$p:$PATH
 done
+
+# Android
+export ANDROID_SDK_ROOT=$HOME/Library/Android/sdk
+export PATH=$PATH:$ANDROID_SDK_ROOT/emulator
+export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
 
 # Editor
 export EDITOR="vim"
@@ -58,17 +80,14 @@ export GIT_EDITOR="${EDITOR}"
 if [[ $OSTYPE == "linux-gnu" ]]; then
   alias open=xdg-open
 fi
-alias cat=ccat
 alias vimrc="$EDITOR $HOME/.vim/vimrc"
 alias zshrc="$EDITOR $HOME/.zshrc"
 alias history="fc -l 1"
 alias gs="git branch -l | fzf | xargs git switch"
 alias :q=exit
 
-# nvm
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# rbenv
+eval "$(rbenv init -)"
 
 # direnv
 eval "$(direnv hook zsh)"
@@ -83,7 +102,7 @@ fi
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_OPTS="--extended --ansi --multi"
-export FZF_ALT_C_COMMAND="$FD_COMMAND --type=d -I . $(ghq root)"
+export FZF_ALT_C_COMMAND="$FD_COMMAND --exclude node_modules --type=d -I . $(ghq root)"
 export FZF_CTRL_T_COMMAND="$FD_COMMAND -I . ~"
 export INTERACTIVE_FILTER="fzf"
 
@@ -105,6 +124,10 @@ if [[ $UID == 0 ]]; then
     export SAVEHIST=0
 fi
 
+# kube-ps1
+source "/opt/homebrew/opt/kube-ps1/share/kube-ps1.sh"
+export PS1='$(kube_ps1)'$PS1
+
 # Prompt
 export PROMPT=$PROMPT'$(kube_ps1) '
 kubeoff
@@ -112,9 +135,21 @@ kubeoff
 # global env
 source $HOME/.env
 
+# gcloud
 
-# The next line updates PATH for the Google Cloud SDK.
-# if [ -f '/home/syumai/Application/google-cloud-sdk/path.zsh.inc' ]; then . '/home/syumai/Application/google-cloud-sdk/path.zsh.inc'; fi
+## The next line updates PATH for the Google Cloud SDK.
+if [ -f "$HOME/google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/google-cloud-sdk/path.zsh.inc"; fi
 
-# The next line enables shell command completion for gcloud.
-# if [ -f '/home/syumai/Application/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/syumai/Application/google-cloud-sdk/completion.zsh.inc'; fi
+## The next line enables shell command completion for gcloud.
+if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/google-cloud-sdk/completion.zsh.inc"; fi
+
+
+# bun completions
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+
+alias rm=gomi
+
+# mise
+source /opt/homebrew/share/zsh/site-functions
+eval "$(mise activate zsh)"
+
